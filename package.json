@@ -8,13 +8,15 @@
             "version": "5.1.0"
         }
     },
-    "description": "Scheduled todo app",
+    "description": "Schedule app",
     "license": "SEE LICENSE IN <your-license-filename>",
     "repository": "https://github.com/ukchukx/catena-mobile.git",
     "dependencies": {
+        "@vue/devtools": "^5.0.0-beta.3",
         "nativescript-theme-core": "~1.0.4",
         "nativescript-vue": "~2.0.0",
-        "tns-core-modules": "~5.1.0"
+        "tns-core-modules": "~5.1.0",
+        "vuex": "^3.1.0"
     },
     "devDependencies": {
         "@babel/core": "~7.1.0",
