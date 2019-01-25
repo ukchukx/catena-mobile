@@ -43,7 +43,7 @@
           <StackLayout class="hr-light"></StackLayout>
         </StackLayout>
 
-        <Button :text="formattedString3" @tap="submit()" class="btn btn-primary m-t-20"></Button>
+        <Button :isEnabled="formOk" :text="formattedString3" @tap="submit()" class="btn btn-primary m-t-20"></Button>
         <!-- <Label
           v-if="isLoggingIn"
           text="Forgot your password?"
@@ -90,6 +90,16 @@ export default {
     },
     boldOrNot() {
       return this.isLoggingIn ? '' : 'bold';
+    },
+    formOk() {
+      const { email, password, confirmPassword } = this.form;
+      const firstCondition = /^\w+\.*\w*@\w+\.\w+/.test(email) && password.length >= 6;
+
+      if (this.isLoggingIn) {
+        return firstCondition;
+      } else {
+        return firstCondition && password === confirmPassword;
+      }
     }
   },
   methods: {
