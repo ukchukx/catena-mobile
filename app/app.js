@@ -1,4 +1,5 @@
 import Vue from 'nativescript-vue';
+import { PullToRefresh } from 'nativescript-pulltorefresh';
 
 import Home from './components/Home';
 import Login from './components/Login';
@@ -6,6 +7,7 @@ import store from './store';
 
 // Vue.config.silent = false;
 const debug = process.env.NODE_ENV !== 'production';
+Vue.registerElement('PullToRefresh', () => PullToRefresh);
 
 new Vue({
 

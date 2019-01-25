@@ -6,7 +6,7 @@ import store from '@/store';
  */
 export default class BackendService {
   constructor() {
-    this.baseUrl = 'http://0612ab0c.ngrok.io/api/v1/';
+    this.baseUrl = 'http://f32ca690.ngrok.io/api/v1/';
     this.debug = process.env.NODE_ENV !== 'production';
   }
 

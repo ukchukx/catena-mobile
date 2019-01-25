@@ -9,7 +9,9 @@
       <TabViewItem title="Schedules">
         <StackLayout orientation="vertical" width="100%" height="100%">
           <Button text="Add task" @tap="onAddItemTap"/>
-          <Schedules/>
+          <PullToRefresh @refresh="refreshTasks">
+            <Schedules/>
+          </PullToRefresh>
         </StackLayout>
       </TabViewItem>
 
@@ -21,12 +23,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Schedules from './Schedules';
 import Login from './Login';
-import { mapActions } from 'vuex';
+import Toast from '@/mixins/Toast';
 
 export default {
   name: 'Home',
+  mixins: [Toast],
   components: {
     Schedules
   },
@@ -36,7 +40,19 @@ export default {
       this.$navigateTo(Login);
     },
     onSelectedIndexChanged({ newIndex }) {
-      if (newIndex === 0) this.fetchTasks();
+      if (newIndex === 0) {
+        this.showToast('Swipe down to refresh');
+        this.showToast('Swipe right to mark done and left to delete', true);
+      }
+    },
+    refreshTasks({ object }) {
+      this.fetchTasks()
+      .then((success) => {
+        object.refreshing = false;
+      })
+      .catch(() => {
+        object.refreshing = false;
+      });
     }
   }
 };
