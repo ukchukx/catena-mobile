@@ -6,8 +6,7 @@ import store from '@/store';
  */
 export default class BackendService {
   constructor() {
-    this.baseUrl = 'http://f32ca690.ngrok.io/api/v1/';
-    this.debug = process.env.NODE_ENV !== 'production';
+    this.baseUrl = 'http://9c808ae7.ngrok.io/api/v1/';
   }
 
   validateCode(response) {
@@ -17,14 +16,14 @@ export default class BackendService {
       } else {
         // console.error('Response code: ' + response.statusCode +
         //   '\nContent: ' + response.content.toString());
-        reject(response);
+        reject(response.content.toJSON());
       }
     })
   }
 
   getJson(response) {
     return new Promise((resolve, reject) => {
-      // if (this.debug) console.log('Content: ' + response.content.toString());
+      // console.log('Content: ' + response.content.toString());
       resolve(response.content.toJSON());
     })
       .catch(e => {
@@ -42,6 +41,7 @@ export default class BackendService {
 
   request(params) {
     params.url = `${this.baseUrl}${params.url}`;
+    params.timeout = params.timeout ? params.timeout : 20000;
     if (!!params.content) params.content = JSON.stringify(params.content);
     return http.request(params);
   }

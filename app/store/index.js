@@ -9,13 +9,14 @@ import * as getters from './getters';
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
-const tokenKey = 'token';
+const tasks = getString('tasks');
+const user = getString('user');
 
 const store = new Vuex.Store({
   state: {
-    tasks: [],
-    user: {},
-    token: getString(tokenKey),
+    tasks: tasks ? JSON.parse(tasks) : [],
+    user: user ? JSON.parse(user) : {},
+    token: getString('token'),
     pendingTasks: []
   },
   mutations,

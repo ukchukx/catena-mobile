@@ -19,9 +19,8 @@ export function fetchProfile({ commit }) {
   return new Promise((resolve, reject) => {
     userService
       .getProfile()
-      .then(({ data, token }) => {
+      .then((data) => {
         commit(SAVE_USER, data);
-        commit(SAVE_TOKEN, token);
         resolve(true);
       })
       .catch((error) => {
@@ -50,9 +49,7 @@ export function changePassword(store, payload) {
   return new Promise((resolve, reject) => {
     userService
       .changePassword(payload)
-      .then((success) => {
-        resolve(success);
-      })
+      .then((success) => resolve(success))
       .catch((error) => {
         console.log('changePassword', error);
         reject(error);

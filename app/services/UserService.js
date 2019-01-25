@@ -36,6 +36,6 @@ export default class UserService extends BackendService {
     })
       .then(this.validateCode)
       .then(this.getJson)
-      .then(({ data, token }) => ({ data, token }));
+      .then(({ data }) => data);
   }
 }

@@ -9,8 +9,8 @@
             class="input"
             hint="Email"
             keyboardType="email"
-            autocorrect="false"
             autocapitalizationType="none"
+            :autocorrect="false"
             v-model.trim="form.email"
             returnKeyType="next"
             @returnPress="focusPassword()"
@@ -19,39 +19,42 @@
         </StackLayout>
 
         <StackLayout class="input-field">
-          <TextField
-            ref="password"
-            class="input"
-            hint="Password"
-            secure="true"
-            v-model.trim="form.password"
-            :returnKeyType="isLoggingIn ? 'done' : 'next'"
-            @returnPress="focusConfirmPassword()"
-          ></TextField>
+          <GridLayout columns="*, 70" rows="auto">
+            <TextField
+              col="0"
+              ref="password"
+              class="input"
+              hint="Password"
+              :autocorrect="false"
+              :secure="!showPassword"
+              v-model.trim="form.password"
+              returnKeyType="done"
+              @returnPress="onTap()"
+            ></TextField>
+            <Button
+              @tap="togglePasswordVisibility()"
+              class="btn-show"
+              col="1"
+              :text="showButtonText"
+            />
+          </GridLayout>
           <StackLayout class="hr-light"></StackLayout>
         </StackLayout>
 
-        <StackLayout v-if="!isLoggingIn" class="input-field">
-          <TextField
-            ref="confirmPassword"
-            class="input"
-            hint="Confirm password"
-            secure="true"
-            v-model.trim="form.confirmPassword"
-            returnKeyType="done"
-          ></TextField>
-          <StackLayout class="hr-light"></StackLayout>
-        </StackLayout>
-
-        <Button :isEnabled="formOk" :text="formattedString3" @tap="submit()" class="btn btn-primary m-t-20"></Button>
+        <Button
+          :isEnabled="canUseButton"
+          :text="formattedString3"
+          @tap="onTap()"
+          :class="buttonClasses"
+        ></Button>
         <!-- <Label
           v-if="isLoggingIn"
           text="Forgot your password?"
           class="login-label"
           @tap="forgotPassword()"
         ></Label>-->
+        <ActivityIndicator :busy="busy"/>
       </StackLayout>
-
       <Label class="login-label sign-up-label" @tap="toggleForm()">
         <FormattedString>
           <Span :text="formattedString1" :class="boldOrNot"></Span>
@@ -63,19 +66,21 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import Toast from '@/mixins/Toast';
 import Home from './Home';
 
 export default {
   name: 'Login',
+  mixins: [Toast],
   data() {
     return {
       form: {
         email: 'test@email.com',
-        password: 'password',
-        confirmPassword: ''
+        password: 'password'
       },
       isLoggingIn: true,
-      busy: false
+      busy: false,
+      showPassword: false
     };
   },
   computed: {
@@ -92,20 +97,27 @@ export default {
       return this.isLoggingIn ? '' : 'bold';
     },
     formOk() {
-      const { email, password, confirmPassword } = this.form;
-      const firstCondition = /^\w+\.*\w*@\w+\.\w+/.test(email) && password.length >= 6;
-
-      if (this.isLoggingIn) {
-        return firstCondition;
-      } else {
-        return firstCondition && password === confirmPassword;
-      }
+      const { email, password } = this.form;
+      return /^\w+\.*\w*@\w+\.\w+/.test(email) && password.length >= 6;
+    },
+    canUseButton() {
+      return this.formOk && !this.busy;
+    },
+    buttonClasses() {
+      const base = 'btn m-t-20';
+      return this.formOk ? `${base} btn-primary` : base;
+    },
+    showButtonText() {
+      return this.showPassword ? 'Hide' : 'Show';
     }
   },
   methods: {
-    ...mapActions(['authenticate']),
+    ...mapActions(['authenticate', 'signup']),
     toggleForm() {
       this.isLoggingIn = !this.isLoggingIn;
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
     login() {
       if (this.busy) return;
@@ -114,7 +126,25 @@ export default {
         .then((success) => {
           this.busy = false;
           if (!success) {
-            console.error('Could not login');
+            this.showToast('Could not login');
+            return;
+          }
+
+          this.$navigateTo(Home);
+        })
+        .catch(() => {
+          this.busy = false;
+          this.showToast('Could not login');
+        });
+    },
+    register() {
+      if (this.busy) return;
+      this.busy = true;
+      this.signup(this.form)
+        .then((success) => {
+          this.busy = false;
+          if (!success) {
+            this.showToast('Could not signup');
             return;
           }
 
@@ -122,26 +152,19 @@ export default {
         })
         .catch(({ message }) => {
           this.busy = false;
-            console.error('Could not login');
+          if (message === 'Validation failed') message = 'Email already used';
+          this.showToast(message);
         });
     },
-    signup() {
-      console.log('signup');
-    },
-    submit() {
+    onTap() {
       if (this.isLoggingIn) {
         this.login();
       } else {
-        this.signup();
+        this.register();
       }
     },
     forgotPassword() {
 
-    },
-    focusConfirmPassword() {
-      if (!this.isLoggingIn) {
-        this.$refs.confirmPassword.nativeView.focus();
-      }
     },
     focusPassword() {
       this.$refs.password.nativeView.focus();
@@ -201,5 +224,11 @@ export default {
 }
 .bold {
   color: #000000;
+}
+.btn-show {
+  background-color: #ffffff;
+}
+ActivityIndicator {
+  color: #42b882;
 }
 </style>
