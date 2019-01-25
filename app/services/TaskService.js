@@ -29,7 +29,7 @@ export default class TaskService extends BackendService {
   getTasks() {
     return this.request({
       url: 'tasks',
-      method: 'POST',
+      method: 'GET',
       headers: this.getCommonHeaders()
     })
       .then(this.validateCode)
@@ -61,7 +61,7 @@ export default class TaskService extends BackendService {
   markTask(id) {
     return this.request({
       url: `tasks/${id}/done`,
-      method: 'GET',
+      method: 'POST',
       headers: this.getCommonHeaders()
     })
       .then(this.validateCode)

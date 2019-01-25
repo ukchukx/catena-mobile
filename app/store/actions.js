@@ -95,7 +95,6 @@ export function authenticate({ commit }, payload) {
 }
 
 export function deleteUser({ commit }) {
-  authService.logout();
   commit(SAVE_USER, {});
   commit(SAVE_TOKEN, '');
   commit(SAVE_TASKS, []);
@@ -105,7 +104,7 @@ export function createTask({ commit }, payload) {
   return new Promise((resolve, reject) => {
     taskService
       .createTask(payload)
-      .then(({ data }) => {
+      .then((data) => {
         commit(SAVE_TASK, data);
         resolve(true);
       })
@@ -120,7 +119,7 @@ export function markTaskAsDone({ commit }, task) {
   return new Promise((resolve, reject) => {
     taskService
       .markTask(task.id)
-      .then(({ data }) => {
+      .then((data) => {
         commit(SAVE_TASK, data);
         resolve(true);
       })
@@ -135,7 +134,7 @@ export function fetchTasks({ commit }) {
   return new Promise((resolve, reject) => {
     taskService
       .getTasks()
-      .then(({ data }) => {
+      .then((data) => {
         commit(SAVE_TASKS, data);
         resolve(true);
       })
@@ -150,7 +149,7 @@ export function updateTask({ commit }, task) {
   return new Promise((resolve, reject) => {
     taskService
       .update(task)
-      .then(({ data }) => {
+      .then((data) => {
         commit(SAVE_TASK, data);
         resolve(true);
       })
@@ -166,9 +165,9 @@ export function deleteTask({ commit }, task) {
   return new Promise((resolve, reject) => {
     taskService
       .deleteTask(id)
-      .then(() => {
+      .then((success) => {
         commit(DELETE_TASK, id);
-        resolve(true);
+        resolve(success);
       })
       .catch((error) => {
         console.log('deleteTask', error);
@@ -181,7 +180,7 @@ export function updateSchedule({ commit }, schedule) {
   return new Promise((resolve, reject) => {
     taskService
       .updateSchedule(schedule)
-      .then(({ data }) => {
+      .then((data) => {
         commit(SAVE_SCHEDULE, data);
         resolve(true);
       })

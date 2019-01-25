@@ -1,32 +1,13 @@
-import { getString, setString } from 'tns-core-modules/application-settings';
 import * as http from 'tns-core-modules/http';
-
-const tokenKey = 'token';
+import store from '@/store';
 
 /**
  * Parent service class. Has common configs and methods.
  */
 export default class BackendService {
   constructor() {
-    this.baseUrl = 'http://2a09eafc.ngrok.io/api/v1/';
+    this.baseUrl = 'http://0612ab0c.ngrok.io/api/v1/';
     this.debug = process.env.NODE_ENV !== 'production';
-  }
-
-  isLoggedIn() {
-    return !!this.token;
-  }
-
-  get appUserHeader() {
-    return `Bearer ${this.token}`;
-  }
-
-  get token() {
-    const token = getString(tokenKey);
-    return token;
-  }
-
-  set token(newToken) {
-    setString(tokenKey, newToken);
   }
 
   validateCode(response) {
@@ -55,7 +36,7 @@ export default class BackendService {
   getCommonHeaders() {
     return {
       'Content-Type': 'application/json',
-      'Authorization': this.appUserHeader
+      'Authorization': `Bearer ${store.getters.token}`
     };
   }
 

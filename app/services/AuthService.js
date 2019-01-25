@@ -15,8 +15,6 @@ export default class AuthService extends BackendService {
       .then(this.validateCode)
       .then(this.getJson)
       .then(({ data, token: { token } }) => {
-        console.info(`Token: ${this.token}`);
-        this.token = token;
         return { data, token };
       });
   }
@@ -34,13 +32,7 @@ export default class AuthService extends BackendService {
       .then(this.validateCode)
       .then(this.getJson)
       .then(({ data, token: { token } }) => {
-        console.info(`Token: ${this.token}`);
-        this.token = token;
         return { data, token };
       });
-  }
-
-  logout() {
-    this.token = '';
   }
 }

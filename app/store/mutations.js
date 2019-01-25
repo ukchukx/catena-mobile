@@ -1,3 +1,4 @@
+import { setString } from 'tns-core-modules/application-settings';
 import {
   SAVE_USER,
   SAVE_TOKEN,
@@ -6,6 +7,8 @@ import {
   DELETE_TASK,
   SAVE_SCHEDULE
 } from './mutation-types';
+
+const tokenKey = 'token';
 
 const saveTask = (state, task) => {
   const idx = state.tasks.findIndex(({ id }) => task.id === id);
@@ -23,6 +26,7 @@ const saveTasks = (state, tasks) => {
 
 const mutations = {
   [SAVE_TOKEN](state, token) {
+    setString(tokenKey, token);
     state.token = token;
   },
   [SAVE_USER](state, profile) {
