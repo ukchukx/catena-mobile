@@ -1,5 +1,5 @@
 <template>
-  <ListView v-if="tasks.length" for="task in tasks" @itemTap="onItemTap">
+  <ListView v-if="tasks.length" for="task in tasks">
     <v-template>
       <Schedule :task="task"/>
     </v-template>
@@ -7,6 +7,7 @@
   <Label v-else text="No tasks"/>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import Schedule from './Schedule';
 
 export default {
@@ -15,16 +16,7 @@ export default {
     Schedule
   },
   computed: {
-    tasks() {
-      return [{ name: 'One', done: true },
-      { name: 'Two', done: false }, { name: 'Three', done: true },
-      { name: 'Four', done: false}];
-    }
-  },
-  methods: {
-    onItemTap({ item }) {
-      console.info(item);
-    }
+    ...mapGetters(['tasks'])
   }
 }
 </script>
