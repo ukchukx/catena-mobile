@@ -1,5 +1,5 @@
 <template>
-  <Page class="page" :actionBarHidden="true">
+  <Page :actionBarHidden="true">
     <TabView
       @selectedIndexChanged="onSelectedIndexChanged"
       height="100%"
@@ -16,7 +16,10 @@
       </TabViewItem>
 
       <TabViewItem title="Profile">
-        <Label text="This tab show the profile view" textWrap="true"/>
+        <StackLayout orientation="vertical" width="100%" height="100%">
+          <Button text="Logout" @tap="logout()"/>
+          <Profile/>
+        </StackLayout>
       </TabViewItem>
     </TabView>
   </Page>
@@ -24,20 +27,22 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Schedules from './Schedules';
-import Login from './Login';
 import Toast from '@/mixins/Toast';
+import Schedules from './Schedules';
+import Profile from './Profile';
+import Login from './Login';
 
 export default {
   name: 'Home',
   mixins: [Toast],
   components: {
-    Schedules
+    Schedules,
+    Profile
   },
   methods: {
-    ...mapActions(['fetchTasks']),
+    ...mapActions(['fetchProfile', 'deleteUser']),
     onAddItemTap(e) {
-      this.$navigateTo(Login);
+      // this.$navigateTo(Login);
     },
     onSelectedIndexChanged({ newIndex }) {
       if (newIndex === 0) {
@@ -46,13 +51,18 @@ export default {
       }
     },
     refreshTasks({ object }) {
-      this.fetchTasks()
+      this.fetchProfile()
       .then((success) => {
         object.refreshing = false;
       })
       .catch(() => {
         object.refreshing = false;
+        this.showToast('Could not fetch tasks');
       });
+    },
+    logout() {
+      this.deleteUser();
+      this.$navigateTo(Login);
     }
   }
 };

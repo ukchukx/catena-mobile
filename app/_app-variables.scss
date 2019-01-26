@@ -15,6 +15,7 @@ $blue-10: rgba($blue-dark, 0.1) !default;
 
 $accent-dark: #3A53FF !default;
 $accent-light: #4781FE !default;
+$green: #42B882 !default;
 
 $success-dark: #06CE6A !default;
 $success-light: #00E676 !default;
@@ -47,7 +48,7 @@ $background: #fff;
 $primary: lighten(#000, 13%);
 $secondary: lighten(#000, 46%);
 $disabled: lighten(#000, 62%);
-$accent: $accent-dark;
+$accent: $green;
 $error: $error-light;
 
 // SideDrawer
