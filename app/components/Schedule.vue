@@ -4,7 +4,7 @@
     rows="*, auto"
     class="task-container"
     @tap="toggleForm()"
-    @swipe="onSwipe"
+    @longPress="onLongPress()"
   >
     <Label col="0" row="0" :text="task.name" class="title"></Label>
     <Label v-if="canMark" col="1" row="0" :text="'\uf0e7'" class="fa title bell"></Label>
@@ -67,7 +67,6 @@ export default {
       },
       remarks: '',
       showForm: false,
-      showScheduleForm: false,
       busy: false
     };
   },
@@ -80,6 +79,10 @@ export default {
     },
     canMark() {
       return !!this.todaySchedule && !this.todaySchedule.done;
+    },
+    longPressOptions() {
+      const common = ['Delete'];
+      return this.canMark ? ['Mark as done', ...common] : common;
     },
     todaySchedule() {
       const today = new Date();
@@ -94,30 +97,40 @@ export default {
         });
     }
   },
+  watch: {
+    busy(val) {
+      this.$emit('busy-changed', val);
+    }
+  },
+  created() {
+    if (this.todaySchedule) this.scheduleForm.id = this.todaySchedule.id;
+  },
   methods: {
     ...mapActions(['deleteTask', 'updateTask', 'markTaskAsDone', 'updateSchedule']),
     toggleForm() {
       this.showForm = !this.showForm;
     },
-    toggleScheduleForm() {
-      this.showScheduleForm = !this.showScheduleForm;
-      if (this.showScheduleForm && !!this.todaySchedule) this.scheduleForm.id = this.todaySchedule.id;
-    },
     resetScheduleForm() {
-      this.scheduleForm = { id: 0, remarks: '' };
+      this.scheduleForm.remarks = '';
     },
-    onSwipe({ direction }) {
-      console.info('onSwipe ' + direction);
-      if (direction === SwipeDirection.left) {
-        confirm(`Are you sure you want to delete "${this.task.name}"?`)
-        .then((sure) => {
-          if (sure) {
-            this.doDelete();
-          }
-        });
-      } else if (direction === SwipeDirection.right) {
-        // Handle right swipe (mark)
-      }
+    onLongPress() {
+      action('What would you like to do?', 'Cancel', this.longPressOptions)
+      .then((choice) => {
+        switch(choice) {
+          case 'Delete':
+            confirm(`Should I delete "${this.task.name}"?`)
+              .then(sure => sure ? this.doDelete() : sure);
+            break;
+          case 'Mark as done':
+            prompt('Care to add a remark? (optional)')
+              .then(({ result, text }) => {
+                this.scheduleForm.remarks = text.trim();
+                if (result) {
+                  this.mark();
+                }
+              });
+        }
+      });
     },
     doDelete() {
       if (this.busy) return;
@@ -138,20 +151,24 @@ export default {
         });
     },
     mark() {
-      if (true) return;
+      if (this.busy) return;
+      this.busy = true;
       this.markTaskAsDone(this.task)
         .then((success) => {
+          this.busy = false;
           if (success) {
             if (this.scheduleForm.remarks.length) this.updateSchedule(this.scheduleForm);
-            this.resetScheduleForm();
-            this.toggleScheduleForm();
-            this.showToast('Done for today');
-            return;
+            this.showToast('Done for today', true);
+          } else {
+            this.showToast('Could not complete task', true);
           }
-          this.showToast('Could not complete task', true);
           this.resetScheduleForm();
         })
-        .catch(({ message }) => this.showToast(message, true));
+        .catch(({ message }) => {
+          this.busy = false;
+          this.resetScheduleForm();
+          this.showToast(message, true);
+        });
     },
     update() {
       if (this.busy) return;

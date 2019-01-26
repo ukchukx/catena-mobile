@@ -44,8 +44,8 @@ export default {
     },
     onSelectedIndexChanged({ newIndex }) {
       if (newIndex === 0) {
-        this.showToast('Swipe down to refresh');
-        this.showToast('Swipe right to mark done and left to delete', true);
+        this.showToast('Pull down to refresh');
+        this.showToast('Long press a task to mark or delete', true);
       }
     },
     logout() {
