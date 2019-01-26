@@ -9,9 +9,7 @@
       <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
         <StackLayout orientation="vertical" width="100%" height="100%">
           <Button text="Add task" @tap="onAddItemTap"/>
-          <PullToRefresh @refresh="refreshTasks">
-            <Schedules/>
-          </PullToRefresh>
+          <Schedules/>
         </StackLayout>
       </TabViewItem>
 
@@ -40,7 +38,7 @@ export default {
     Profile
   },
   methods: {
-    ...mapActions(['fetchProfile', 'deleteUser']),
+    ...mapActions(['deleteUser']),
     onAddItemTap(e) {
       // this.$navigateTo(Login);
     },
@@ -49,16 +47,6 @@ export default {
         this.showToast('Swipe down to refresh');
         this.showToast('Swipe right to mark done and left to delete', true);
       }
-    },
-    refreshTasks({ object }) {
-      this.fetchProfile()
-      .then((success) => {
-        object.refreshing = false;
-      })
-      .catch(() => {
-        object.refreshing = false;
-        this.showToast('Could not fetch tasks');
-      });
     },
     logout() {
       this.deleteUser();

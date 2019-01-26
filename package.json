@@ -1,10 +1,10 @@
 {
     "nativescript": {
         "id": "org.geneius.Catena",
-        "tns-android": {
+        "tns-ios": {
             "version": "5.1.0"
         },
-        "tns-ios": {
+        "tns-android": {
             "version": "5.1.0"
         }
     },
@@ -13,9 +13,9 @@
     "repository": "https://github.com/ukchukx/catena-mobile.git",
     "dependencies": {
         "@vue/devtools": "^5.0.0-beta.3",
-        "nativescript-pulltorefresh": "^2.2.0",
         "nativescript-theme-core": "~1.0.4",
         "nativescript-toast": "^1.4.6",
+        "nativescript-ui-listview": "^5.1.1",
         "nativescript-vue": "~2.0.0",
         "tns-core-modules": "~5.1.0",
         "vuex": "^3.1.0"

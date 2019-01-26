@@ -1,21 +1,53 @@
 <template>
-  <GridLayout columns="*, auto" class="task-container" @swipe="onSwipe">
-    <!-- Wrap in containers for bigger tap targets -->
-    <GridLayout columns="auto, *" col="0" orientation="horizontal" class="tap-target">
-      <Label col="0" :text="task.name" class="title"></Label>
-    </GridLayout>
-    <GridLayout col="1" class="delete-container" @tap="doDelete()">
-      <StackLayout>
-        <Image src="res://delete"></Image>
+  <GridLayout
+    columns="*, auto"
+    rows="*, auto"
+    class="task-container"
+    @tap="toggleForm()"
+    @swipe="onSwipe"
+  >
+    <Label col="0" row="0" :text="task.name" class="title"></Label>
+    <Label v-if="canMark" col="1" row="0" :text="'\uf0e7'" class="fa title bell"></Label>
+    <GridLayout row="1">
+      <StackLayout class="form" v-if="showForm">
+        <StackLayout class="input-field">
+          <Label text="Name" class="input-label"></Label>
+          <TextField
+            col="0"
+            ref="name"
+            class="input"
+            hint="Name"
+            v-model="form.name"
+            returnKeyType="next"
+          ></TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+          <Label text="Description" class="input-label"></Label>
+          <TextView
+            col="0"
+            ref="desc"
+            class="input"
+            hint="Description"
+            :textWrap="true"
+            v-model="form.description"
+          ></TextView>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <Button :isEnabled="formOk" text="Update" @tap="update()"></Button>
+        <ActivityIndicator :busy="busy"/>
       </StackLayout>
     </GridLayout>
   </GridLayout>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { SwipeDirection } from 'tns-core-modules/ui/gestures';
+import Toast from '@/mixins/Toast';
 
 export default {
   name: 'Schedule',
+  mixins: [Toast],
   props: {
     task: {
       required: true,
@@ -43,8 +75,8 @@ export default {
     ...mapGetters(['tasks']),
     formOk() {
       const { form: { name, description } } = this;
-      return name.length >= 3 &&
-        !this.tasks.some(t => name === t.name && t.description === description);
+      return (name.trim().length >= 3 && !this.tasks.some(t => name.trim() === t.name)) ||
+        description.trim() !== this.task.description;
     },
     canMark() {
       return !!this.todaySchedule && !this.todaySchedule.done;
@@ -75,28 +107,34 @@ export default {
       this.scheduleForm = { id: 0, remarks: '' };
     },
     onSwipe({ direction }) {
-      // 1. Right
-      // 2. Left
       console.info('onSwipe ' + direction);
+      if (direction === SwipeDirection.left) {
+        confirm(`Are you sure you want to delete "${this.task.name}"?`)
+        .then((sure) => {
+          if (sure) {
+            this.doDelete();
+          }
+        });
+      } else if (direction === SwipeDirection.right) {
+        // Handle right swipe (mark)
+      }
     },
     doDelete() {
       if (this.busy) return;
-      // if (!confirm('Are you sure?')) return; // Change to confirm dialog
-
       this.busy = true;
 
       this.deleteTask(this.task)
         .then((success) => {
           this.busy = false;
           if (success) {
-            this.showFlash('Task deleted', 'success');
+            this.showToast('Task deleted');
           } else {
-            this.showFlash('Task not deleted', 'warning');
+            this.showToast('Task not deleted', true);
           }
         })
         .catch(({ message }) => {
           this.busy = false;
-          this.showFlash(message, 'warning');
+          this.showToast(message, true);
         });
     },
     mark() {
@@ -107,70 +145,73 @@ export default {
             if (this.scheduleForm.remarks.length) this.updateSchedule(this.scheduleForm);
             this.resetScheduleForm();
             this.toggleScheduleForm();
-            this.showFlash('Done for today', 'success');
+            this.showToast('Done for today');
             return;
           }
-          this.showFlash('Could not complete task', 'warning');
+          this.showToast('Could not complete task', true);
           this.resetScheduleForm();
         })
-        .catch(({ message }) => this.showFlash(message, 'warning'));
+        .catch(({ message }) => this.showToast(message, true));
     },
     update() {
       if (this.busy) return;
       this.busy = true;
+      this.form.description = this.form.description.trim();
+      this.form.name = this.form.name.trim();
 
       this.updateTask(this.form)
         .then((success) => {
           this.busy = false;
           if (success) {
-            this.showFlash('Task updated', 'success');
+            this.showToast('Task updated');
           } else {
-            this.showFlash('Task not updated', 'warning');
+            this.showToast('Task not updated', true);
           }
         })
         .catch(({ message }) => {
           this.busy = false;
-          this.showFlash(message, 'warning');
+          this.showToast(message, true);
         });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.title {
-  font-size: 30;
-}
-.platform-android .item-container {
-  margin-top: 1;
-}
-.item-container {
-  background-color: white;
-  .visible {
-    animation-name: show;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+@import "../app-variables";
+
+.task-container {
+  background-color: #ffffff;
+  margin-top: 5;
+  margin-bottom: 5;
+  padding-right: 10;
+
+  .title {
+    font-size: 30;
   }
-  .tap-target {
-    padding-top: 13;
-    padding-bottom: 13;
-    padding-left: 16;
-    label {
-      min-width: 200;
-    }
+
+  .bell {
+    padding-top: 5;
+    padding-bottom: 5;
   }
-  .check-box {
+
+  .input-label {
+    margin-bottom: 15;
+  }
+
+  .input {
+    font-size: 18;
+    placeholder-color: #a8a8a8;
+  }
+
+  .form {
+    margin-left: 10;
     margin-right: 10;
-    height: 20;
-  }
-  .delete-container {
-    padding: 10 15;
+    flex-grow: 2;
     vertical-align: middle;
-    image {
-      height: 20;
-    }
-    StackLayout {
-      padding: 5;
-    }
+  }
+
+  .fa {
+    color: $accent;
   }
 }
 </style>

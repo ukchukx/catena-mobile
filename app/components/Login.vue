@@ -172,60 +172,68 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import "../app-variables";
+
 .page {
   align-items: center;
   flex-direction: column;
-}
-.form {
-  margin-left: 30;
-  margin-right: 30;
-  flex-grow: 2;
-  vertical-align: middle;
-}
 
-.logo {
-  margin-bottom: 12;
-  height: 90;
-  font-weight: bold;
-}
-.header {
-  horizontal-align: center;
-  font-size: 25;
-  font-weight: 600;
-  margin-bottom: 70;
-  text-align: center;
-  color: #42b882;
-}
+  .form {
+    margin-left: 30;
+    margin-right: 30;
+    flex-grow: 2;
+    vertical-align: middle;
+  }
 
-.input-field {
-  margin-bottom: 25;
-}
-.input {
-  font-size: 18;
-  placeholder-color: #a8a8a8;
-}
+  .logo {
+    margin-bottom: 12;
+    height: 90;
+    font-weight: bold;
+  }
 
-.btn-primary {
-  height: 50;
-  margin: 30 5 15 5;
-  background-color: #42b882;
-  border-radius: 5;
-  font-size: 20;
-  font-weight: 600;
-}
-.login-label {
-  horizontal-align: center;
-  color: #a8a8a8;
-  font-size: 16;
-}
-.sign-up-label {
-  margin-bottom: 20;
-}
-.bold {
-  color: #000000;
-}
-.btn-show {
-  background-color: #ffffff;
+  .header {
+    horizontal-align: center;
+    font-size: 25;
+    font-weight: 600;
+    margin-bottom: 70;
+    text-align: center;
+    color: $accent;
+  }
+
+  .input-field {
+    margin-bottom: 25;
+  }
+  .input {
+    font-size: 18;
+    placeholder-color: #a8a8a8;
+  }
+
+  .btn-primary {
+    height: 50;
+    margin: 30 5 15 5;
+    background-color: $accent;
+    border-radius: 5;
+    font-size: 20;
+    font-weight: 600;
+  }
+
+  .login-label {
+    horizontal-align: center;
+    color: #a8a8a8;
+    font-size: 16;
+  }
+
+  .sign-up-label {
+    margin-bottom: 20;
+  }
+
+  .bold {
+    color: #000000;
+  }
+
+  .btn-show {
+    background-color: #ffffff;
+  }
 }
 </style>

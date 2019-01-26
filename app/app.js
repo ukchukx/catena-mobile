@@ -1,5 +1,6 @@
 import Vue from 'nativescript-vue';
-import { PullToRefresh } from 'nativescript-pulltorefresh';
+import RadListView from 'nativescript-ui-listview/vue';
+
 
 import Home from './components/Home';
 import Login from './components/Login';
@@ -7,7 +8,7 @@ import store from './store';
 
 // Vue.config.silent = false;
 const debug = process.env.NODE_ENV !== 'production';
-Vue.registerElement('PullToRefresh', () => PullToRefresh);
+Vue.use(RadListView);
 
 new Vue({
 
