@@ -83,7 +83,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Toast from '@/mixins/Toast';
-import Home from './Home';
 
 export default {
   name: 'Login',
@@ -98,7 +97,6 @@ export default {
         new_password: ''
       },
       username: '',
-      isLoggingIn: true,
       busy: false,
       showCurrentPassword: false,
       showPassword: false
@@ -143,9 +141,6 @@ export default {
   },
   methods: {
     ...mapActions(['updateProfile', 'changePassword']),
-    toggleForm() {
-      this.isLoggingIn = !this.isLoggingIn;
-    },
     togglePassword() {
       this.showPassword = !this.showPassword;
     },

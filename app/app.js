@@ -1,5 +1,6 @@
 import Vue from 'nativescript-vue';
 import RadListView from 'nativescript-ui-listview/vue';
+import RadCalendarPlugin from 'nativescript-ui-calendar/vue';
 
 
 import Home from './components/Home';
@@ -9,6 +10,7 @@ import store from './store';
 // Vue.config.silent = false;
 const debug = process.env.NODE_ENV !== 'production';
 Vue.use(RadListView);
+Vue.use(RadCalendarPlugin);
 
 new Vue({
 

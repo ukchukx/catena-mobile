@@ -1,13 +1,13 @@
 <template>
   <GridLayout
-    columns="*, auto"
+    columns="auto, *, auto"
     rows="*, auto"
     class="task-container"
-    @tap="toggleForm()"
     @longPress="onLongPress()"
   >
-    <Label col="0" row="0" :text="task.name" class="title"></Label>
-    <Label v-if="canMark" col="1" row="0" :text="'\uf0e7'" class="fa title bell"></Label>
+    <Label col="0" row="0" :text="'\uf0e7'" class="fa title bolt"></Label>
+    <Label @tap="toggleForm()" col="1" row="0" :text="task.name" class="title"></Label>
+    <Label col="2" row="0" :text="'\uf061'" class="fa title" @tap="arrowTap()"></Label>
     <GridLayout row="1">
       <StackLayout class="form" v-if="showForm">
         <StackLayout class="input-field">
@@ -44,6 +44,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { SwipeDirection } from 'tns-core-modules/ui/gestures';
 import Toast from '@/mixins/Toast';
+import TaskReport from './TaskReport';
 
 export default {
   name: 'Schedule',
@@ -189,6 +190,9 @@ export default {
           this.busy = false;
           this.showToast(message, true);
         });
+    },
+    arrowTap() {
+      this.$navigateTo(TaskReport, { props: { id: this.task.id } });
     }
   }
 };
@@ -206,9 +210,11 @@ export default {
     font-size: 30;
   }
 
-  .bell {
+  .bolt {
     padding-top: 5;
     padding-bottom: 5;
+    margin-left: 5;
+    margin-right: 10;
   }
 
   .input-label {
@@ -225,10 +231,6 @@ export default {
     margin-right: 10;
     flex-grow: 2;
     vertical-align: middle;
-  }
-
-  .fa {
-    color: $accent;
   }
 }
 </style>
