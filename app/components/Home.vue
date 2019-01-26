@@ -6,7 +6,7 @@
       androidTabsPosition="bottom"
       iosIconRenderingMode="alwaysOriginal"
     >
-      <TabViewItem title="Schedules">
+      <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
         <StackLayout orientation="vertical" width="100%" height="100%">
           <Button text="Add task" @tap="onAddItemTap"/>
           <PullToRefresh @refresh="refreshTasks">
@@ -15,7 +15,7 @@
         </StackLayout>
       </TabViewItem>
 
-      <TabViewItem title="Profile">
+      <TabViewItem style="font-family: FontAwesome;" :title="'\uf2c0 Profile'">
         <StackLayout orientation="vertical" width="100%" height="100%">
           <Button text="Logout" @tap="logout()"/>
           <Profile/>

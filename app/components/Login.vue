@@ -228,7 +228,4 @@ export default {
 .btn-show {
   background-color: #ffffff;
 }
-ActivityIndicator {
-  color: #42b882;
-}
 </style>

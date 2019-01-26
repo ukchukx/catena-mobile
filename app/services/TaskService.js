@@ -16,7 +16,7 @@ export default class TaskService extends BackendService {
 
   update(payload) {
     return this.request({
-      url: `tasks/${id}`,
+      url: `tasks/${payload.id}`,
       method: 'PUT',
       headers: this.getCommonHeaders(),
       content: payload,

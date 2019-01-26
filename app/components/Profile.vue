@@ -75,12 +75,7 @@
         <StackLayout class="hr-light"></StackLayout>
       </StackLayout>
 
-      <Button
-        :isEnabled="canUseButton"
-        text="Change password"
-        @tap="onChangePassword()"
-        class="m-t-20"
-      ></Button>
+      <Button :isEnabled="canUseButton" text="Change password" @tap="onChangePassword()"></Button>
       <ActivityIndicator :busy="busy"/>
     </StackLayout>
   </FlexboxLayout>
@@ -237,9 +232,5 @@ FlexboxLayout {
 
 .btn-show {
   background-color: #ffffff;
-}
-
-ActivityIndicator {
-  color: #42b882;
 }
 </style>
