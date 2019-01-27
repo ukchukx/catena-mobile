@@ -3,13 +3,11 @@ import RadListView from 'nativescript-ui-listview/vue';
 import RadCalendarPlugin from 'nativescript-ui-calendar/vue';
 import { CheckBox } from 'nativescript-checkbox';
 
-
 import Home from './components/Home';
 import Login from './components/Login';
 import store from './store';
 
 // Vue.config.silent = false;
-const debug = process.env.NODE_ENV !== 'production';
 Vue.use(RadListView);
 Vue.use(RadCalendarPlugin);
 Vue.registerElement('CheckBox', () => CheckBox, {
