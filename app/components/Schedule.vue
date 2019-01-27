@@ -7,7 +7,7 @@
   >
     <Label v-if="canMark" col="0" row="0" :text="'\uf0a2'" class="fa title bell"></Label>
     <Label @tap="toggleForm()" col="1" row="0" :text="task.name" class="title"></Label>
-    <Label col="2" row="0" :text="'\uf061'" class="fa title" @tap="arrowTap()"></Label>
+    <Label col="2" row="0" :text="'\uf061'" class="fa arrow" @tap="arrowTap()"></Label>
     <GridLayout row="1">
       <StackLayout class="form" v-if="showForm">
         <StackLayout class="input-field">
@@ -203,6 +203,10 @@ export default {
 
   .title {
     font-size: 30;
+  }
+
+  .arrow {
+    font-size: 25;
   }
 
   .bell {

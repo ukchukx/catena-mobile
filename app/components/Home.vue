@@ -8,7 +8,7 @@
     >
       <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button class="btn-primary" text="Add task" @tap="onAddItemTap()"/>
+          <Button class="btn-primary" text="Add todo" @tap="addTodo()"/>
           <Schedules/>
         </StackLayout>
       </TabViewItem>
@@ -40,13 +40,13 @@ export default {
   },
   methods: {
     ...mapActions(['deleteUser']),
-    onAddItemTap() {
+    addTodo() {
       this.$navigateTo(CreateTask);
     },
     onSelectedIndexChanged({ newIndex }) {
       if (newIndex === 0) {
         this.showToast('Pull down to refresh');
-        this.showToast('Long press a task to mark or delete', true);
+        this.showToast('Long press a todo to mark or delete', true);
       }
     },
     logout() {

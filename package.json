@@ -13,6 +13,7 @@
     "repository": "https://github.com/ukchukx/catena-mobile.git",
     "dependencies": {
         "@vue/devtools": "^5.0.0-beta.3",
+        "nativescript-checkbox": "^3.0.3",
         "nativescript-theme-core": "~1.0.4",
         "nativescript-toast": "^1.4.6",
         "nativescript-ui-calendar": "^3.10.0",

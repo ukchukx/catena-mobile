@@ -100,7 +100,7 @@ export function deleteUser({ commit }) {
 export function createTask({ commit }, payload) {
   return new Promise((resolve, reject) => {
     taskService
-      .createTask(payload)
+      .create(payload)
       .then((data) => {
         commit(SAVE_TASK, data);
         resolve(true);
