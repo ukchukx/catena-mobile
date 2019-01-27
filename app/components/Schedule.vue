@@ -5,7 +5,7 @@
     class="task-container"
     @longPress="onLongPress()"
   >
-    <Label col="0" row="0" :text="'\uf0e7'" class="fa title bolt"></Label>
+    <Label v-if="canMark" col="0" row="0" :text="'\uf0a2'" class="fa title bell"></Label>
     <Label @tap="toggleForm()" col="1" row="0" :text="task.name" class="title"></Label>
     <Label col="2" row="0" :text="'\uf061'" class="fa title" @tap="arrowTap()"></Label>
     <GridLayout row="1">
@@ -83,7 +83,7 @@ export default {
     },
     longPressOptions() {
       const common = ['Delete'];
-      return this.canMark ? ['Mark as done', ...common] : common;
+      return this.canMark ? ['Mark', ...common] : common;
     },
     todaySchedule() {
       const today = new Date();
@@ -96,11 +96,6 @@ export default {
             today.getMonth() === dueDate.getMonth() &&
             today.getDate() === dueDate.getDate();
         });
-    }
-  },
-  watch: {
-    busy(val) {
-      this.$emit('busy-changed', val);
     }
   },
   created() {
@@ -210,11 +205,13 @@ export default {
     font-size: 30;
   }
 
-  .bolt {
+  .bell {
+    font-size: 18;
     padding-top: 5;
     padding-bottom: 5;
     margin-left: 5;
     margin-right: 10;
+    color: $disabled;
   }
 
   .input-label {

@@ -8,14 +8,14 @@
     >
       <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button text="Add task" @tap="onAddItemTap"/>
+          <Button class="btn-primary" text="Add task" @tap="onAddItemTap()"/>
           <Schedules/>
         </StackLayout>
       </TabViewItem>
 
       <TabViewItem style="font-family: FontAwesome;" :title="'\uf2c0 Profile'">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button text="Logout" @tap="logout()"/>
+          <Button class="btn-primary" text="Logout" @tap="logout()"/>
           <Profile/>
         </StackLayout>
       </TabViewItem>
@@ -29,6 +29,7 @@ import Toast from '@/mixins/Toast';
 import Schedules from './Schedules';
 import Profile from './Profile';
 import Login from './Login';
+import CreateTask from './CreateTask';
 
 export default {
   name: 'Home',
@@ -39,8 +40,8 @@ export default {
   },
   methods: {
     ...mapActions(['deleteUser']),
-    onAddItemTap(e) {
-      // this.$navigateTo(Login);
+    onAddItemTap() {
+      this.$navigateTo(CreateTask);
     },
     onSelectedIndexChanged({ newIndex }) {
       if (newIndex === 0) {
@@ -68,5 +69,10 @@ export default {
 
 .info {
   font-size: 20;
+}
+
+.btn-primary {
+  background-color: $accent;
+  color: #ffffff;
 }
 </style>
