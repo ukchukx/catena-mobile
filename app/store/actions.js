@@ -24,7 +24,7 @@ export function fetchProfile({ commit }) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('fetchProfile', error);
+        console.error(['fetchProfile', error]);
         reject(error);
       });
   });
@@ -39,7 +39,7 @@ export function updateProfile({ commit }, payload) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('updateProfile', error);
+        console.error(['updateProfile', error]);
         reject(error);
       });
   });
@@ -51,7 +51,7 @@ export function changePassword(store, payload) {
       .changePassword(payload)
       .then((success) => resolve(success))
       .catch((error) => {
-        console.log('changePassword', error);
+        console.error(['changePassword', error]);
         reject(error);
       });
   });
@@ -67,7 +67,7 @@ export function signup({ commit }, payload) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('signup', error);
+        console.error(['signup', error]);
         reject(error);
       });
   });
@@ -78,14 +78,12 @@ export function authenticate({ commit }, payload) {
     authService
       .login(payload)
       .then(({ data, token }) => {
-        console.log('save user and token');
         commit(SAVE_USER, data);
         commit(SAVE_TOKEN, token);
         resolve(true);
       })
       .catch((error) => {
-        console.log('authenticate');
-        console.error(error);
+        console.error(['authenticate', error]);
         reject(error);
       });
   });
@@ -106,7 +104,7 @@ export function createTask({ commit }, payload) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('createTask', error);
+        console.error(['createTask', error]);
         reject(error);
       });
   });
@@ -121,7 +119,7 @@ export function markTaskAsDone({ commit }, task) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('markTaskAsDone', error);
+        console.error(['markTaskAsDone', error]);
         reject(error);
       });
   });
@@ -136,7 +134,7 @@ export function fetchTasks({ commit }) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('fetchTasks', error);
+        console.error(['fetchTasks', error]);
         reject(error);
       });
   });
@@ -151,7 +149,7 @@ export function updateTask({ commit }, task) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('updateTask', error);
+        console.error(['updateTask', error]);
         reject(error);
       });
   });
@@ -167,7 +165,7 @@ export function deleteTask({ commit }, task) {
         resolve(success);
       })
       .catch((error) => {
-        console.log('deleteTask', error);
+        console.error(['deleteTask', error]);
         reject(error);
       });
   });
@@ -182,7 +180,7 @@ export function updateSchedule({ commit }, schedule) {
         resolve(true);
       })
       .catch((error) => {
-        console.log('updateSchedule', error);
+        console.error(['updateSchedule', error]);
         reject(error);
       });
   });
