@@ -6,7 +6,7 @@ import store from '@/store';
  */
 export default class BackendService {
   constructor() {
-    this.baseUrl = 'http://192.168.8.100:3333/api/v1/';
+    this.baseUrl = 'https://api.catena.com.ng/api/v1/';
   }
 
   validateCode(response) {
