@@ -132,9 +132,9 @@ export default {
 
           this.$navigateTo(Home);
         })
-        .catch(() => {
+        .catch(({ message = 'Could not login' }) => {
           this.busy = false;
-          this.showToast('Could not login');
+          this.showToast(message);
         });
     },
     register() {
