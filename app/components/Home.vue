@@ -6,17 +6,17 @@
       androidTabsPosition="bottom"
       iosIconRenderingMode="alwaysOriginal"
     >
-      <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
+      <TabViewItem style="font-family: FontAwesome;" :title="schedulesTabTitle">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button class="btn-primary" text="Add task" @tap="addTask()"/>
+          <Button class="btn-primary" :text="addButtonText" @tap="addTask()"/>
           <Schedules/>
         </StackLayout>
       </TabViewItem>
 
-      <TabViewItem style="font-family: FontAwesome;" :title="'\uf2c0 Profile'">
+      <TabViewItem style="font-family: FontAwesome;" :title="profileTabTitle">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button class="btn-primary" text="Logout" @tap="logout()"/>
           <Profile/>
+          <Button :text="logoutButtonText" @tap="logout()"/>
         </StackLayout>
       </TabViewItem>
     </TabView>
@@ -37,6 +37,20 @@ export default {
   components: {
     Schedules,
     Profile
+  },
+  computed: {
+    addButtonText() {
+      return '\uf067 Add task';
+    },
+    logoutButtonText() {
+      return '\uf090 Logout';
+    },
+    profileTabTitle() {
+      return '\uf2c0';
+    },
+    schedulesTabTitle() {
+      return '\uf03a';
+    }
   },
   methods: {
     ...mapActions(['deleteUser']),

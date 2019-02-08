@@ -75,8 +75,8 @@ export default {
   data() {
     return {
       form: {
-        email: 'ukchukundah@gmail.com',
-        password: 'G7wKLwGpqxGtWo'
+        email: '',
+        password: ''
       },
       isLoggingIn: true,
       busy: false,
