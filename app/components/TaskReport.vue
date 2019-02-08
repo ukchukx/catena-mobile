@@ -44,17 +44,17 @@ export default {
     task() {
       return this.tasks.find(({ id }) => id === this.id);
     },
-    today() {
-      const today = new Date();
-      today.setUTCHours(0, 0, 0, 0);
-      return today;
-    },
     currentStreak() {
       const result = [];
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+
       for (let d = this.streakable.length - 1; d >= 0; --d) {
+        const date = new Date(this.streakable[d].due_date);
+        date.setUTCHours(0, 0, 0, 0);
         if (this.streakable[d].done) {
           result.push(this.streakable[d]);
-        } else {
+        } else if (+today !== +date) {
           break;
         }
       }
@@ -75,17 +75,23 @@ export default {
       return !streaks.length ? 0 : Math.max(...streaks.map(streak => streak.length));
     },
     streakable() {
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+
       return this.task.schedules
         .filter(({ due_date, done }) => {
           const date = new Date(due_date);
           date.setUTCHours(0, 0, 0, 0);
 
-          const isToday = +this.today === +date && !done;
+          const isToday = +today === +date && !done;
 
-          return isToday || this.today >= date;
+          return isToday || today >= date;
         });
     },
     events() {
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+
       return this.task.schedules
         .map((schedule) => {
           const startDate = new Date(schedule.due_date);
@@ -94,14 +100,14 @@ export default {
           const endDate = new Date(startDate);
           endDate.setUTCHours(18, 0, 0, 0);
 
-          const isToday = +this.today === +startDate && !schedule.done;
+          const isToday = +today === +startDate && !schedule.done;
 
           let backgroundColor;
           if (schedule.done) { // done
             backgroundColor = '#66CC7F';
           } else if (isToday) { // today
             backgroundColor = '#8B8C8B';
-          } else if (this.today <= startDate) { // upcoming
+          } else if (today <= startDate) { // upcoming
             backgroundColor = '#D3D3D3';
           } else { // missed
             backgroundColor = '#FF8080';
