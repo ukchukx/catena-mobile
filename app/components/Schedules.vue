@@ -2,9 +2,9 @@
   <RadListView
     pullToRefresh="true"
     swipeActions="true"
-    v-if="tasks.length"
+    v-if="sortedTasks.length"
     ref="taskList"
-    for="task in tasks"
+    for="task in sortedTasks"
     @pullToRefreshInitiated="onPullToRefreshInitiated"
   >
     <v-template>
@@ -45,7 +45,25 @@ export default {
     Schedule
   },
   computed: {
-    ...mapGetters(['tasks'])
+    ...mapGetters(['tasks']),
+    dueTasks() {
+      const today = new Date();
+      today.setUTCHours(12, 0, 0, 0);
+      return this.tasks.filter(({ schedules }) => schedules
+        .some(({ due_date }) => {
+          const dueDate = new Date(due_date);
+          return today.getFullYear() === dueDate.getFullYear() &&
+            today.getMonth() === dueDate.getMonth() &&
+            today.getDate() === dueDate.getDate();
+        })
+      );
+    },
+    notDueTasks() {
+      return this.tasks.filter(({ id }) => this.dueTasks.every(task => task.id !== id));
+    },
+    sortedTasks() {
+      return [...this.dueTasks, ...this.notDueTasks];
+    }
   },
   methods: {
     ...mapActions(['fetchProfile']),
