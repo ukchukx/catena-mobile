@@ -118,7 +118,6 @@ export default {
     formOk() {
       const { form: { name }, selectedDays, selectedDate } = this;
       const basicCondition = name.length >= 3 &&
-        this.tasks.every(t => name.trim() !== t.name) &&
         this.selectedEndDate !== null;
 
       return this.isDaily ? (!!selectedDays.length && basicCondition) :
