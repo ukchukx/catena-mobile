@@ -8,7 +8,7 @@
     >
       <TabViewItem style="font-family: FontAwesome;" :title="'\uf03a Schedules'">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button class="btn-primary" text="Add todo" @tap="addTodo()"/>
+          <Button class="btn-primary" text="Add task" @tap="addTask()"/>
           <Schedules/>
         </StackLayout>
       </TabViewItem>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     ...mapActions(['deleteUser']),
-    addTodo() {
+    addTask() {
       this.$navigateTo(CreateTask);
     },
     onSelectedIndexChanged({ newIndex }) {
