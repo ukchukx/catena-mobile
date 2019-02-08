@@ -116,7 +116,7 @@ export default {
             confirm(`Should I delete "${this.task.name}"?`)
               .then(sure => sure ? this.doDelete() : sure);
             break;
-          case 'Mark as done':
+          case 'Mark':
             prompt('Care to add a remark? (optional)')
               .then(({ result, text }) => {
                 this.scheduleForm.remarks = text.trim();
