@@ -50,19 +50,20 @@ export default {
       const today = new Date();
       today.setUTCHours(12, 0, 0, 0);
       return this.tasks.filter(({ schedules }) => schedules
-        .some(({ due_date }) => {
+        .some(({ due_date, done }) => {
           const dueDate = new Date(due_date);
           return today.getFullYear() === dueDate.getFullYear() &&
             today.getMonth() === dueDate.getMonth() &&
-            today.getDate() === dueDate.getDate();
+            today.getDate() === dueDate.getDate() &&
+            !done;
         })
       );
     },
-    notDueTasks() {
+    otherTasks() {
       return this.tasks.filter(({ id }) => this.dueTasks.every(task => task.id !== id));
     },
     sortedTasks() {
-      return [...this.dueTasks, ...this.notDueTasks];
+      return [...this.dueTasks, ...this.otherTasks];
     }
   },
   methods: {
