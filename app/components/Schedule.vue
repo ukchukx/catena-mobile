@@ -6,7 +6,7 @@
     @longPress="onLongPress()"
   >
     <Label v-if="canMark" col="0" row="0" :text="'\uf0a2'" class="fa title bell"></Label>
-    <Label @tap="toggleForm()" col="1" row="0" :text="task.name" class="title"></Label>
+    <Label @tap="toggleForm()" col="1" row="0" :text="task.name" :class="titleClasses"></Label>
     <Label col="2" row="0" :text="'\uf054'" class="fa arrow" @tap="arrowTap()"></Label>
     <GridLayout row="1">
       <StackLayout class="form" v-if="showForm">
@@ -76,6 +76,9 @@ export default {
     formOk() {
       const { form: { name, description } } = this;
       return name.trim().length >= 3 || description.trim() !== this.task.description;
+    },
+    titleClasses() {
+      return this.canMark ? 'title' : 'title not-due';
     },
     canMark() {
       return !!this.todaySchedule && !this.todaySchedule.done;
@@ -202,6 +205,10 @@ export default {
 
   .title {
     font-size: 30;
+
+    &.not-due {
+      color: #9c9898;
+    }
   }
 
   .arrow {
