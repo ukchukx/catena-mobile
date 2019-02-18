@@ -56,7 +56,13 @@
           </StackLayout>
 
           <StackLayout class="input-field">
-            <DatePicker :minDate="new Date()" :maxDate="endOfYear" v-model="selectedEndDate"/>
+            <Label text="Start date" class="input-label"/>
+            <DatePicker :minDate="new Date()" :maxDate="dateRange.end" v-model="dateRange.start" />
+          </StackLayout>
+
+          <StackLayout class="input-field">
+            <Label text="End date" class="input-label"/>
+            <DatePicker :minDate="dateRange.start" :maxDate="endOfYear" v-model="dateRange.end" />
           </StackLayout>
 
           <Button :class="buttonClasses" :isEnabled="formOk" text="Create" @tap="onSubmit()"></Button>
@@ -75,10 +81,10 @@ export default {
   name: 'CreateTask',
   mixins: [Toast],
   data() {
-    const selectedEndDate = new Date();
-    selectedEndDate.setMonth(11);
-    selectedEndDate.setDate(31);
-    const endOfYear = new Date(selectedEndDate);
+    const endDate = new Date();
+    endDate.setMonth(11);
+    endDate.setDate(31);
+    const endOfYear = new Date(endDate);
 
     return {
       busy: false,
@@ -88,7 +94,11 @@ export default {
         schedules: []
       },
       endOfYear,
-      selectedEndDate,
+      endDate,
+      dateRange: {
+        start: new Date(),
+        end: endDate
+      },
       selectedType: 'daily',
       selectedDate: 1,
       typeOptions: [
@@ -116,11 +126,10 @@ export default {
       return this.selectedType === 'monthly';
     },
     formOk() {
-      const { form: { name }, selectedDays, selectedDate } = this;
-      const basicCondition = name.length >= 3 &&
-        this.selectedEndDate !== null;
+      const { isDaily, form: { name }, selectedDays, selectedDate, dateRange: { end } } = this;
+      const basicCondition = name.length >= 3 && end !== null;
 
-      return this.isDaily ? (!!selectedDays.length && basicCondition) :
+      return isDaily ? (!!selectedDays.length && basicCondition) :
         basicCondition && (selectedDate >= 1 && selectedDate <= 28);
     },
     buttonClasses() {
@@ -164,7 +173,7 @@ export default {
       this.busy = true;
 
       const selectedDays = this.isDaily ? [...this.selectedDays] : [];
-      let schedules = [...dateGenerator({ selectedDays, end: this.selectedEndDate })];
+      let schedules = [...dateGenerator(Object.assign({ selectedDays }, this.dateRange))];
 
       if (this.isMonthly) { // Filter out the unneeded dates
         schedules = schedules.filter(date => date.getDate() === this.selectedDate);
