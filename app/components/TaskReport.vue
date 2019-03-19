@@ -5,11 +5,13 @@
         <StackLayout>
           <Label class="title" :text="task.name"/>
         </StackLayout>
-        <GridLayout columns="*, *" rows="*, *">
+        <GridLayout columns="*, *" rows="*, *, *">
           <Label col="0" row="0" class="label" text="Current streak"/>
           <Label col="1" row="0" class="streak" :text="currentStreak"/>
           <Label col="0" row="1" class="label" text="Longest streak"/>
           <Label col="1" row="1" class="streak" :text="longestStreak"/>
+          <Label col="0" row="2" class="label" text="Performance"/>
+          <Label col="1" row="2" class="streak" :text="performance"/>
         </GridLayout>
       </StackLayout>
       <StackLayout>
@@ -43,6 +45,11 @@ export default {
     ...mapGetters(['tasks']),
     task() {
       return this.tasks.find(({ id }) => id === this.id);
+    },
+    performance() {
+      const completed = this.streakable.filter(({ done }) => done).length;
+      const percent = +((completed * 100) / this.streakable.length).toFixed(2);
+      return `${percent}%`;
     },
     currentStreak() {
       const result = [];
@@ -135,7 +142,7 @@ FlexboxLayout {
 }
 
 .details {
-  height: 400;
+  height: 500;
 
   .title {
     font-size: 40;

@@ -1,48 +1,52 @@
 <template>
-  <GridLayout
-    columns="auto, *, auto"
-    rows="*, auto"
-    class="task-container"
-    @longPress="onLongPress()"
-  >
-    <Label v-if="canMark" col="0" row="0" :text="'\uf0a2'" class="fa title bell"></Label>
-    <Label @tap="toggleForm()" col="1" row="0" :text="task.name" :class="titleClasses"></Label>
-    <Label col="2" row="0" :text="'\uf054'" class="fa arrow" @tap="arrowTap()"></Label>
-    <GridLayout row="1">
-      <StackLayout class="form" v-if="showForm">
-        <StackLayout class="input-field">
-          <Label text="Name" class="input-label"></Label>
-          <TextField
-            col="0"
-            ref="name"
-            class="input"
-            hint="Name"
-            v-model="form.name"
-            returnKeyType="next"
-          ></TextField>
-          <StackLayout class="hr-light"></StackLayout>
+  <StackLayout orientation="vertical">
+    <GridLayout
+      columns="auto, *, auto"
+      rows="*, auto"
+      class="task-container"
+      @longPress="onLongPress()"
+    >
+      <Label v-if="canMark" col="0" row="0" :text="'\uf0a2'" class="fa bell"></Label>
+      <Label @tap="toggleForm()" col="1" row="0" :text="task.name" :class="titleClasses"></Label>
+      <Label col="2" row="0" :text="'\uf054'" class="fa arrow" @tap="arrowTap()"></Label>
+      <GridLayout row="1" colSpan="3">
+        <StackLayout class="form" v-if="showForm">
+          <StackLayout class="input-field">
+            <Label text="Name" class="input-label"></Label>
+            <TextField
+              col="0"
+              ref="name"
+              class="input"
+              hint="Name"
+              v-model="form.name"
+              returnKeyType="next"
+            ></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+          </StackLayout>
+          <StackLayout class="input-field">
+            <Label text="Description" class="input-label"></Label>
+            <TextView
+              col="0"
+              ref="desc"
+              class="input"
+              hint="Description"
+              :textWrap="true"
+              v-model="form.description"
+            ></TextView>
+            <StackLayout class="hr-light"></StackLayout>
+          </StackLayout>
+          <Button :isEnabled="formOk" text="Update" @tap="update()"></Button>
+          <ActivityIndicator :busy="busy"/>
         </StackLayout>
-        <StackLayout class="input-field">
-          <Label text="Description" class="input-label"></Label>
-          <TextView
-            col="0"
-            ref="desc"
-            class="input"
-            hint="Description"
-            :textWrap="true"
-            v-model="form.description"
-          ></TextView>
-          <StackLayout class="hr-light"></StackLayout>
-        </StackLayout>
-        <Button :isEnabled="formOk" text="Update" @tap="update()"></Button>
-        <ActivityIndicator :busy="busy"/>
-      </StackLayout>
+      </GridLayout>
     </GridLayout>
-  </GridLayout>
+
+    <StackLayout opacity="0.2" backgroundColor="#bab8b8" height="1" />
+  </StackLayout>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { SwipeDirection } from 'tns-core-modules/ui/gestures';
+// import { SwipeDirection } from 'tns-core-modules/ui/gestures';
 import Toast from '@/mixins/Toast';
 import TaskReport from './TaskReport';
 
@@ -199,28 +203,29 @@ export default {
 
 .task-container {
   background-color: #ffffff;
-  margin-top: 5;
-  margin-bottom: 5;
   padding-right: 10;
+  padding-left: 10;
+
+  Label.title {
+    padding-top: 15;
+    padding-bottom: 15;
+  }
+
+  .arrow, .bell {
+    vertical-align: middle;
+  }
 
   .title {
-    font-size: 30;
+    font-size: 25;
 
     &.not-due {
       color: #9c9898;
     }
   }
 
-  .arrow {
-    font-size: 25;
-  }
-
   .bell {
-    font-size: 18;
-    padding-top: 5;
-    padding-bottom: 5;
-    margin-left: 5;
-    margin-right: 10;
+    font-size: 10;
+    padding-right: 10;
     color: $disabled;
   }
 

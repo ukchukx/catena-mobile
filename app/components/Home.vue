@@ -1,7 +1,6 @@
 <template>
   <Page :actionBarHidden="true">
     <TabView
-      @selectedIndexChanged="onSelectedIndexChanged"
       height="100%"
       androidTabsPosition="bottom"
       iosIconRenderingMode="alwaysOriginal"
@@ -56,12 +55,6 @@ export default {
     ...mapActions(['deleteUser']),
     addTask() {
       this.$navigateTo(CreateTask);
-    },
-    onSelectedIndexChanged({ newIndex }) {
-      if (newIndex === 0) {
-        this.showToast('Pull down to refresh');
-        this.showToast('Long press a todo to mark or delete', true);
-      }
     },
     logout() {
       this.deleteUser();
