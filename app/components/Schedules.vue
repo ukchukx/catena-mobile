@@ -66,6 +66,12 @@ export default {
       return [...this.dueTasks, ...this.otherTasks];
     }
   },
+  created() {
+    this.fetchProfile()
+      .catch(() => {
+        this.showToast('Could not fetch tasks');
+      });
+  },
   methods: {
     ...mapActions(['fetchProfile']),
     onPullToRefreshInitiated ({ object }) {
