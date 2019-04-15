@@ -1,76 +1,74 @@
 <template>
-  <Page class="page" :actionBarHidden="true">
-    <FlexboxLayout>
-      <ScrollView scrollBarIndicatorVisible="false">
-        <StackLayout class="form">
-          <StackLayout class="input-field">
-            <Label text="Name" class="input-label"/>
-            <TextField class="input" v-model="form.name" returnKeyType="next"/>
-            <StackLayout class="hr-light"/>
-          </StackLayout>
-
-          <StackLayout class="input-field">
-            <Label text="Description" class="input-label"/>
-            <TextView
-              class="input"
-              :textWrap="true"
-              v-model="form.description"
-              returnKeyType="done"
-            />
-            <StackLayout class="hr-light"/>
-          </StackLayout>
-
-          <StackLayout class="input-field">
-            <check-box
-              fillColor="#42B882"
-              boxType="circle"
-              v-for="op in typeOptions"
-              :key="op.value"
-              :ref="op.value"
-              :text="op.text"
-              @checkedChange="onTypeCheckedChange($event.value, op.value)"
-            />
-          </StackLayout>
-
-          <StackLayout v-show="isDaily" class="input-field">
-            <check-box
-              fillColor="#42B882"
-              v-for="op in dayOptions"
-              :key="op.value"
-              :ref="op.value"
-              :text="op.text"
-              @checkedChange="onDayCheckedChange($event.value, op)"
-            />
-          </StackLayout>
-          <StackLayout v-show="isMonthly" class="input-field">
-            <Label text="Choose day (1-28)" class="input-label"/>
-            <TextField
-              class="input"
-              :autocorrect="false"
-              autocapitalizationType="none"
-              keyboardType="number"
-              v-model.number="selectedDate"
-              returnKeyType="done"
-            />
-            <StackLayout class="hr-light"/>
-          </StackLayout>
-
-          <StackLayout class="input-field">
-            <Label text="Start date" class="input-label"/>
-            <DatePicker :minDate="new Date()" :maxDate="dateRange.end" v-model="dateRange.start" />
-          </StackLayout>
-
-          <StackLayout class="input-field">
-            <Label text="End date" class="input-label"/>
-            <DatePicker :minDate="dateRange.start" :maxDate="endOfYear" v-model="dateRange.end" />
-          </StackLayout>
-
-          <Button :class="buttonClasses" :isEnabled="formOk" text="Create" @tap="onSubmit()"></Button>
-          <ActivityIndicator :busy="busy"/>
+  <FlexboxLayout>
+    <ScrollView scrollBarIndicatorVisible="false">
+      <StackLayout class="form">
+        <StackLayout class="input-field">
+          <Label text="Name" class="input-label"/>
+          <TextField class="input" v-model="form.name" returnKeyType="next"/>
+          <StackLayout class="hr-light"/>
         </StackLayout>
-      </ScrollView>
-    </FlexboxLayout>
-  </Page>
+
+        <StackLayout class="input-field">
+          <Label text="Description" class="input-label"/>
+          <TextView
+            class="input"
+            :textWrap="true"
+            v-model="form.description"
+            returnKeyType="done"
+          />
+          <StackLayout class="hr-light"/>
+        </StackLayout>
+
+        <StackLayout class="input-field">
+          <check-box
+            fillColor="#42B882"
+            boxType="circle"
+            v-for="op in typeOptions"
+            :key="op.value"
+            :ref="op.value"
+            :text="op.text"
+            @checkedChange="onTypeCheckedChange($event.value, op.value)"
+          />
+        </StackLayout>
+
+        <StackLayout v-show="isDaily" class="input-field">
+          <check-box
+            fillColor="#42B882"
+            v-for="op in dayOptions"
+            :key="op.value"
+            :ref="op.value"
+            :text="op.text"
+            @checkedChange="onDayCheckedChange($event.value, op)"
+          />
+        </StackLayout>
+        <StackLayout v-show="isMonthly" class="input-field">
+          <Label text="Choose day (1-28)" class="input-label"/>
+          <TextField
+            class="input"
+            :autocorrect="false"
+            autocapitalizationType="none"
+            keyboardType="number"
+            v-model.number="selectedDate"
+            returnKeyType="done"
+          />
+          <StackLayout class="hr-light"/>
+        </StackLayout>
+
+        <StackLayout class="input-field">
+          <Label text="Start date" class="input-label"/>
+          <DatePicker :minDate="new Date()" :maxDate="dateRange.end" v-model="dateRange.start" />
+        </StackLayout>
+
+        <StackLayout class="input-field">
+          <Label text="End date" class="input-label"/>
+          <DatePicker :minDate="dateRange.start" :maxDate="endOfYear" v-model="dateRange.end" />
+        </StackLayout>
+
+        <Button :class="buttonClasses" :isEnabled="formOk" text="Create" @tap="onSubmit()"></Button>
+        <ActivityIndicator :busy="busy"/>
+      </StackLayout>
+    </ScrollView>
+  </FlexboxLayout>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';

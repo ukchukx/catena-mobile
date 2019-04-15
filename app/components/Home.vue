@@ -7,8 +7,13 @@
     >
       <TabViewItem style="font-family: FontAwesome;" :title="schedulesTabTitle">
         <StackLayout orientation="vertical" width="100%" height="100%">
-          <Button class="btn-primary" :text="addButtonText" @tap="addTask()"/>
           <Schedules/>
+        </StackLayout>
+      </TabViewItem>
+
+      <TabViewItem style="font-family: FontAwesome;" :title="addScheduleTabTitle">
+        <StackLayout orientation="vertical" width="100%" height="100%">
+          <CreateTask />
         </StackLayout>
       </TabViewItem>
 
@@ -35,12 +40,10 @@ export default {
   mixins: [Toast],
   components: {
     Schedules,
-    Profile
+    Profile,
+    CreateTask
   },
   computed: {
-    addButtonText() {
-      return '\uf067 Add task';
-    },
     logoutButtonText() {
       return '\uf090 Logout';
     },
@@ -49,13 +52,13 @@ export default {
     },
     schedulesTabTitle() {
       return '\uf03a';
+    },
+    addScheduleTabTitle() {
+      return '\uf067';
     }
   },
   methods: {
     ...mapActions(['deleteUser']),
-    addTask() {
-      this.$navigateTo(CreateTask);
-    },
     logout() {
       this.deleteUser();
       this.$navigateTo(Login);

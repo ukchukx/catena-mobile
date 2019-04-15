@@ -213,6 +213,7 @@ export default {
 
   .arrow, .bell {
     vertical-align: middle;
+    color: #aaa9a9;
   }
 
   .title {
