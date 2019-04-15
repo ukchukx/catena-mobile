@@ -66,23 +66,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-// Start custom common variables
-@import "../app-variables";
-// End custom common variables
-
-// Custom styles
-.fa {
-  color: $accent-dark;
-}
-
-.info {
-  font-size: 20;
-}
-
-.btn-primary {
-  background-color: $accent;
-  color: #ffffff;
-}
-</style>
