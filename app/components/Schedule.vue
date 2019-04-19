@@ -124,13 +124,7 @@ export default {
               .then(sure => sure ? this.doDelete() : sure);
             break;
           case 'Mark':
-            prompt('Care to add a remark? (optional)')
-              .then(({ result, text }) => {
-                this.scheduleForm.remarks = text.trim();
-                if (result) {
-                  this.mark();
-                }
-              });
+            this.mark();
         }
       });
     },
